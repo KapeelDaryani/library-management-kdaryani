@@ -1,0 +1,44 @@
+insert into authors values (auid,bid,aid,jid,firstname,lastname);
+
+
+insert into books values (bid,title,edition,numbercopies);
+
+
+insert into contributor values (cid,miid,mid,firstname,lastname);
+
+
+insert into editors values (eid,jiid,jid,miid,mid,firstname,lastname);
+
+
+insert into jarticles values (jid,aid,title);
+
+
+insert into jissues values (jiid,jid,title);
+
+
+insert into journal values (jid,title,numbercopies);
+
+
+insert into librarian values (lid,pwd,firstname,lastname);
+
+
+insert into magazine  values (mid,period,name,numbercompies);
+
+
+insert into missues values (miid,mid,title);
+
+
+insert into publisher values (pid,bid,jiid,jid,mid,address,pname,pdate);
+
+
+insert into users values (usid,pwd,firstname,lastname);
+
+
+
+insert into borrowsbooks values (usid,bid);
+
+
+insert into borrowsjournals values (usid,jid);
+
+
+insert into borrowsmagazine values (usid,mid);

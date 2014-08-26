@@ -1,0 +1,149 @@
+
+---------------------------
+-- STRONG ENTITIES
+---------------------------
+
+CREATE TABLE users(
+  usID int primary key,
+  pwd varchar(45) not null,
+  firstName varchar(45) not null,
+  lastName varchar(45) not null
+);
+
+CREATE TABLE librarian(
+  lID int primary key,
+  pwd varchar(45) not null,
+  firstName varchar(45) not null,
+  lastName varchar(45) not null 
+);
+
+CREATE TABLE books(
+  bID int primary key,
+  title varchar(45) not null,
+  edition int,
+  numberCopies int not null
+);
+
+CREATE TABLE Magazine(
+  mID int primary key,
+  period varchar(7),
+  name varchar(45) not null,
+  check (period in ('daily','weekly','monthly','yearly'))
+);
+
+CREATE TABLE journal(
+  jID int primary key,
+  title varchar(45) not null
+);
+
+CREATE TABLE Authors(
+  auID int primary key,
+  bID int,
+  aID int,
+  jID int,
+  firstName varchar(45) not null,
+  lastName varchar(45) not null,
+  FOREIGN KEY (bID) references books ON delete cascade,
+  FOREIGN KEY (aID,jID) references jarticles ON delete cascade
+);
+
+CREATE TABLE publisher(
+  pID int primary key,
+  bID int, -- for books
+  jiID int, --for journal issues
+  jID int,
+  mID int, -- for magazine
+  address varchar(100),
+  pName varchar(45),
+  pDate varchar(10),--this data type will be entered as MM/DD/YYYY check at application level
+  FOREIGN KEY (bID) references books ON delete cascade,
+  FOREIGN KEY (jiID,jID) references jissues ON delete cascade,
+  FOREIGN KEY (mID) references magazine ON delete cascade
+);
+
+CREATE TABLE contributor(
+  cID int primary key,
+  miID int,
+  mID int,
+  firstName varchar(45) not null,
+  lastName varchar(45) not null,
+  FOREIGN KEY (miID,mid) references missues ON delete cascade
+);
+
+CREATE TABLE editors(
+  eID int primary key,
+  jiID int,
+  jID int,
+  miID int,
+  mID int,
+  firstName varchar(45) not null,
+  lastName varchar(45) not null,
+  FOREIGN KEY (jiID,jid) references jissues ON delete cascade,
+  FOREIGN KEY (miID,mid) references missues ON delete cascade
+  
+);
+
+---------------------------
+-- WEAK ENTITIES
+---------------------------
+
+CREATE TABLE jarticles(
+  jID int,
+  aID int,
+  title varchar(45),
+  PRIMARY KEY (jID,aID),
+  FOREIGN KEY (jID) REFERENCES journal ON DELETE CASCADE
+);
+
+
+CREATE TABLE jissues(
+  jiID int,
+  jID int,
+  PRIMARY KEY (jiID,jID),
+  FOREIGN KEY (jID) REFERENCES journal ON DELETE CASCADE
+);
+
+CREATE TABLE missues(
+  miID int,
+  mID int,
+  PRIMARY KEY (miID,mID),
+  title varchar(45),
+  FOREIGN KEY (mID) REFERENCES magazine ON DELETE CASCADE
+);
+
+-----------------------
+-- many to many
+-----------------------
+
+CREATE TABLE Manages(
+  usID int,
+  lID int,
+  PRIMARY KEY (usID,lID),
+  FOREIGN KEY (usID) references users ON DELETE CASCADE,
+  FOREIGN KEY (lid) references librarian ON DELETE CASCADE
+);
+
+CREATE TABLE borrowsBooks(
+  usID int,
+  bID int,
+  PRIMARY KEY (usID,bID),
+  FOREIGN KEY (usID) references users ON DELETE CASCADE,
+  FOREIGN KEY (bid) references books ON DELETE CASCADE
+);
+
+CREATE TABLE borrowsMagazine(
+  usID int,
+  mID int,
+  PRIMARY KEY (usID,mID),
+  FOREIGN KEY (usID) references users ON DELETE CASCADE,
+  FOREIGN KEY (mid) references magazine ON DELETE CASCADE
+);
+
+CREATE TABLE borrowsJournals(
+  usID int,
+  jID int,
+  PRIMARY KEY (usID,jID),
+  FOREIGN KEY (usID) references users ON DELETE CASCADE,
+  FOREIGN KEY (jid) references Journal ON DELETE CASCADE
+);
+
